@@ -1,0 +1,14 @@
+.tab {
+  display: none;
+}
+
+.indicator-wrapper{
+  display: flex;
+}
+
+.indicator {
+  display: none;
+  width: 17%;
+  height: 3vh;
+  background: #e64141;
+}
