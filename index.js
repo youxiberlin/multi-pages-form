@@ -6,17 +6,19 @@ indicator[currentTab].style.display = "block";
 
 function showTab(n) {
   const tab = document.getElementsByClassName("tab");
+  document.getElementById("nextBtn").classList.remove("submit");
   tab[n].style.display = "block";
 
   // first tab
-  if (n == 0) {
+  if (n === 0) {
     document.getElementById("prevBtn").style.display = "none";
   } else {
     document.getElementById("prevBtn").style.display = "inline";
   }
 
   // summary tab
-  if (n == (tab.length - 2)) {
+  if (n === (tab.length - 2)) {
+    summary();
     document.getElementById("nextBtn").innerHTML = "Submit";
     document.getElementById("nextBtn").classList.add("submit");
   } else {
@@ -24,32 +26,14 @@ function showTab(n) {
   }
 
   // the last tab
-  if (n == (tab.length - 1)) {
+  if (n === (tab.length - 1)) {
     document.getElementById("prevBtn").style.display = "none";
     document.getElementById("nextBtn").style.display = "none";
   }
 
 }
 
-function nextPrev(n) {
-  const tab = document.getElementsByClassName("tab");
-  const indicator = document.getElementsByClassName("indicator");
-  tab[currentTab].style.display = "none";
-
-  // when prev btn clicked, set the indicator to the prev stage
-  if (n == -1) {
-    indicator[currentTab].style.display = "none";
-  }
-
-  // showing next/prev tabs & indicator
-  currentTab = currentTab + n;
-  function showIndicator(currentTab) {
-    indicator[currentTab].style.display = "block";
-  }
-
-  showTab(currentTab);
-  showIndicator(currentTab);
-  // showing summary 
+function summary() {
   const name = document.getElementById("name").value
   const email = document.getElementById("e-mail").value
   const phone = document.getElementById("phone").value
@@ -63,8 +47,6 @@ function nextPrev(n) {
   summaryEmail.innerHTML = email;
   summaryPhone.innerHTML = phone;
 
-  console.log('name:', name);
-
   // getting values of the salary tab
   var radios = document.getElementsByName('radios');
   for (let i = 0; i < radios.length; i++) {
@@ -73,6 +55,82 @@ function nextPrev(n) {
     }
   }
 }
+
+function validate(currentTab) {
+  const errMsg = document.getElementById("error-msg")
+  if (currentTab === 0) {
+    const name = document.getElementById("name").value
+    const nameLength = name.split(" ").length;
+
+    if (nameLength === 0 || nameLength === 1) {
+      errMsg.innerHTML = "please fill in full name";
+      return false;
+    } else {
+      errMsg.innerHTML = "";
+      return true;
+    }
+  } else if (currentTab === 1) {
+    const email = document.getElementById("e-mail").value
+
+    if (!email.includes("@")) {
+      errMsg.innerHTML = "please fill in a valid E-mail address";
+      return false
+    } else {
+      errMsg.innerHTML = "";
+      return true;
+    }
+  } else if (currentTab === 2) {
+    const phone = document.getElementById("phone").value
+    if (!phone) {
+      errMsg.innerHTML = "please fill in a phone number";
+      return false
+    } else {
+      errMsg.innerHTML = "";
+      return true;
+    }
+  } else if (currentTab === 3) {
+    // add a function to check if any radio button was checked
+    return true;
+  } else {
+    return true;
+  }
+
+}
+
+function changeTab(n) {
+  const tab = document.getElementsByClassName("tab");
+
+  if (n === -1) {
+    currentTab = currentTab + n;
+    console.log(currentTab)
+    tab[currentTab + 1].style.display = "none";
+    indicator[currentTab + 1].style.display = "none";
+    showTab(currentTab);
+
+  } else {
+    const valid = validate(currentTab);
+    if (!valid) {
+      return;
+    } else {
+      tab[currentTab].style.display = "none";
+      currentTab = currentTab + n;
+      showTab(currentTab);
+      indicator[currentTab].style.display = "block";
+    }
+  }
+}
+
+document.addEventListener('keydown', (event) => {
+  const keyName = event.key;
+
+  if (keyName === 'Enter') {
+    return changeTab(1);
+  }
+
+}, false);
+
+
+
 
 
 

@@ -91,3 +91,7 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px #eee inset;
 }
 
+#error-msg {
+  color:  rgba(47, 58, 82, 0.9);
+  font-size: 0.9rem;
+}
