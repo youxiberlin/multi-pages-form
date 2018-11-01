@@ -48,7 +48,7 @@ function summary() {
   summaryPhone.innerHTML = phone;
 
   // getting values of the salary tab
-  var radios = document.getElementsByName('radios');
+  const radios = document.getElementsByName('radios');
   for (let i = 0; i < radios.length; i++) {
     if (radios[i].checked) {
       summarySalary.innerHTML = radios[i].value;
@@ -60,9 +60,9 @@ function validate(currentTab) {
   const errMsg = document.getElementById("error-msg")
   if (currentTab === 0) {
     const name = document.getElementById("name").value
-    const nameLength = name.split(" ").length;
+    const splittedName = name.split(" ")
 
-    if (nameLength === 0 || nameLength === 1) {
+    if (splittedName.length === 0 || splittedName.length === 1 || splittedName[1] === "") {
       errMsg.innerHTML = "please fill in full name";
       return false;
     } else {
@@ -89,12 +89,24 @@ function validate(currentTab) {
       return true;
     }
   } else if (currentTab === 3) {
-    // add a function to check if any radio button was checked
-    return true;
+    let radioChecked;
+    const radios = document.getElementsByName('radios');
+    for (let i = 0; i < radios.length; i++) {
+      if (radios[i].checked) {
+        radioChecked = true;
+      }
+    }
+
+    if (!radioChecked) {
+      errMsg.innerHTML = "please choose a salary range";
+      return false
+    } else {
+      errMsg.innerHTML = "";
+      return true;
+    }
   } else {
     return true;
   }
-
 }
 
 function changeTab(n) {
@@ -127,7 +139,7 @@ document.addEventListener('keydown', (event) => {
     return changeTab(1);
   }
 
-}, false);
+});
 
 
 
